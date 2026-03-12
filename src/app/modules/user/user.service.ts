@@ -6,6 +6,12 @@ const createUser = async (payload: IUser) => {
     return result;
 };
 
+const getAllUsers = async () => {
+    const result = await User.find();
+    return result;
+};
+
 export const userService = {
     createUser,
+    getAllUsers,
 };
