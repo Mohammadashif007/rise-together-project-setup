@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { userService } from "./user.service";
 import httpStatus from "http-status";
+import { sendResponse } from "../../utils/sendResponse";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body;
         const result = await userService.createUser(data);
-        res.status(httpStatus.CREATED).json({
+        sendResponse(res, {
+            statusCode: httpStatus.CREATED,
             success: true,
             message: "User created successfully",
             data: result,
@@ -18,11 +20,12 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await userService.getAllUsers();
-        res.status(httpStatus.OK).json({
+        const users = await userService.getAllUsers();
+        sendResponse(res, {
+            statusCode: httpStatus.OK,
             success: true,
-            message: "All user retrieve successfully",
-            data: result,
+            message: "All users retrieve successfully",
+            data: users,
         });
     } catch (error) {
         next(error);
