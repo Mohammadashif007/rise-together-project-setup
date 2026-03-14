@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { success } from "zod";
 
 export const globalErrorHandler = (
     err: any,
@@ -7,9 +6,12 @@ export const globalErrorHandler = (
     res: Response,
     next: NextFunction,
 ) => {
-    res.status(500).json({
+    const statusCode = err.statusCode || 500;
+
+    res.status(statusCode).json({
         success: false,
-        message: "Something went wrong",
+        message: err.message || "Something went wrong",
         error: err,
+        stack: err.stack,
     });
 };
